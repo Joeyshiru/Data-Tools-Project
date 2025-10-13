@@ -174,23 +174,79 @@ insert into FMS.Ticket (passenger_id, schedule_id, seat_number, booking_time, pr
 ```
 
 - The Tables should look like this in Supabase:
-  
-<img width="1889" height="498" alt="Image" src="https://github.com/user-attachments/assets/2b198395-3dac-447d-b162-f0b4cfac4e99" />
 
-books:
-<img width="1909" height="502" alt="Image" src="https://github.com/user-attachments/assets/fdfb1359-88e8-4315-95b7-b47ec9e3a4be" />
-
-customers:
-<img width="1905" height="499" alt="Image" src="https://github.com/user-attachments/assets/0c570432-9145-4dac-9c69-4ccb0ac70686" />
-
-orders:
-<img width="1904" height="494" alt="Image" src="https://github.com/user-attachments/assets/1d877c0a-5ae0-4626-b937-294fd0f6bf75" />
-
-Ingine:
+Bus:
 <img width="1900" height="503" alt="Image" src="https://github.com/user-attachments/assets/00e856c6-9846-4fe2-afb6-538902db9e3d" />
 
-- The ERD screenshot from Supabase looks like this: 
-<img width="1064" height="577" alt="image" src="https://github.com/user-attachments/assets/4b8a39b1-ff20-4bd3-be6f-f662b35ae49f" />
+Passenger:
+<img width="1904" height="494" alt="Image" src="https://github.com/user-attachments/assets/1d877c0a-5ae0-4626-b937-294fd0f6bf75" />
+
+Route:
+<img width="1905" height="499" alt="Image" src="https://github.com/user-attachments/assets/0c570432-9145-4dac-9c69-4ccb0ac70686" />
+
+Schedule:
+<img width="1909" height="502" alt="Image" src="https://github.com/user-attachments/assets/fdfb1359-88e8-4315-95b7-b47ec9e3a4be" />
+
+Ticket  
+<img width="1889" height="498" alt="Image" src="https://github.com/user-attachments/assets/2b198395-3dac-447d-b162-f0b4cfac4e99" />
+
+# FMS Database ERD
+
+```mermaid
+erDiagram
+    Bus {
+        int bus_id PK
+        varchar bus_number
+        int capacity
+        varchar model
+        varchar manufacturer
+        int year_of_make
+        varchar status
+        date last_service
+    }
+    Route {
+        int route_id PK
+        varchar route_number
+        varchar origin
+        varchar destination
+        float distance_km
+        interval estimated_time
+    }
+    Schedule {
+        int schedule_id PK
+        int bus_id FK
+        int route_id FK
+        timestamp departure_time
+        timestamp arrival_time
+    }
+    Passenger {
+        int passenger_id PK
+        varchar first_name
+        varchar last_name
+        varchar email
+        varchar phone_number
+    }
+    Ticket {
+        int ticket_id PK
+        int passenger_id FK
+        int schedule_id FK
+        varchar seat_number
+        timestamp booking_time
+        float price
+    }
+
+    %% Relationships
+    Bus ||--o{ Schedule : "One Bus can have Many Schedules"
+    Route ||--o{ Schedule : "One Route can have Many Schedules"
+    Schedule ||--o{ Ticket : "One Schedule can have Many Tickets"
+    Passenger ||--o{ Ticket : "One Passenger can book Many Tickets"
+```
+
+**Relationship Types:**
+- **Bus to Schedule:** One-to-Many (A bus can have many schedules)
+- **Route to Schedule:** One-to-Many (A route can have many schedules)
+- **Schedule to Ticket:** One-to-Many (A schedule can have many tickets)
+- **Passenger to Ticket:** One-to-Many (A passenger can book many tickets)
 
 - To test the table, I used two queries: 
 
