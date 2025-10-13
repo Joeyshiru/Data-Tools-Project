@@ -241,13 +241,13 @@ erDiagram
     Schedule ||--o{ Ticket : "One Schedule can have Many Tickets"
     Passenger ||--o{ Ticket : "One Passenger can book Many Tickets"
 ```
-```
 **Relationship Types:**
 - **Bus to Schedule:** One-to-Many (A bus can have many schedules)
 - **Route to Schedule:** One-to-Many (A route can have many schedules)
 - **Schedule to Ticket:** One-to-Many (A schedule can have many tickets)
 - **Passenger to Ticket:** One-to-Many (A passenger can book many tickets)
-```
+
+  
 - To test the table, I used two queries: 
 
 ```sql
