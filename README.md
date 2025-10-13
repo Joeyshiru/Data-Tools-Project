@@ -269,11 +269,10 @@ where booking_time::date = '2025-10-13';
 
 ## 👥 Authors <a name="authors"></a>
 
-👤 **Joy Phoebe**
+👤 **Joyce Wanjiru**
 
-- GitHub: [@joyapisi](https://github.com/joyapisi)
-- Twitter: [@joyphoebe300](https://twitter.com/joyphoebe300)
-- LinkedIn: [@joyapisi](https://linkedin.com/in/joyapisi)
+- GitHub: [@joeyshiru](https://github.com/joeyshiru)
+
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
