@@ -175,7 +175,7 @@ insert into FMS.Ticket (passenger_id, schedule_id, seat_number, booking_time, pr
 
 - The Tables should look like this in Supabase:
 authors
-<img width="1893" height="476" alt="image" src="https://github.com/user-attachments/assets/9a89f3ae-77d1-4ed2-a5c5-140db1e7e27b" />
+<img width="1893" height="476" alt="image" src="https://github.com/Joeyshiru/MySQL-Projects/blob/main/Screenshot%202025-10-13%20215717.png" />
 
 books:
 <img width="1881" height="445" alt="image" src="https://github.com/user-attachments/assets/d741319f-a0ff-416c-b50f-34c315c9af24" />
