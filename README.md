@@ -241,27 +241,27 @@ erDiagram
     Schedule ||--o{ Ticket : "One Schedule can have Many Tickets"
     Passenger ||--o{ Ticket : "One Passenger can book Many Tickets"
 ```
-
+```
 **Relationship Types:**
 - **Bus to Schedule:** One-to-Many (A bus can have many schedules)
 - **Route to Schedule:** One-to-Many (A route can have many schedules)
 - **Schedule to Ticket:** One-to-Many (A schedule can have many tickets)
 - **Passenger to Ticket:** One-to-Many (A passenger can book many tickets)
-
+```
 - To test the table, I used two queries: 
 
 ```sql
-SELECT * FROM orders
-WHERE name = "Nadine Gordimer"
-````
+select * from FMS.route 
+where destination = 'Mombasa';
+```
 
 ```sql
-SELECT * FROM books
-WHERE in_stock = "TRUE"
-````
+select * from FMS.Ticket
+where booking_time::date = '2025-10-13';
+```
 
 - Here are the results of the queries:
-<img width="1460" height="791" alt="image" src="https://github.com/user-attachments/assets/37cf0a4e-ca92-4d8d-8888-2cca0165d32b" />
+<img width="1172" height="585" alt="Image" src="https://github.com/user-attachments/assets/6368be82-6f1a-4775-b87a-ed9c5b08a3b2" />
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
