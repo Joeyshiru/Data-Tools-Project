@@ -65,86 +65,112 @@ OR
 Clone this repository to your desired folder:
 
 ```sh
-  git clone https://github.com/joyapisi/readme-template-data
-  cd budget-app
+  git clone https://github.com/joeyshiru/Data-Tools-Project
+  cd Final-Project-1
 ```
 
 <!-- ### DB Creation -->
 
 ### DB Schema
 
-- The DB is made up of 3 tables. Eaach table has 5 entries.
+- The DB is made up of 5 tables. Each table has 5 entries.
 - To create the table, you will need a schema as shown below:
 
 ```sql
--- Drop old tables if they exist
-DROP TABLE IF EXISTS orders CASCADE;
-DROP TABLE IF EXISTS customers CASCADE;
-DROP TABLE IF EXISTS books CASCADE;
-DROP TABLE IF EXISTS authors CASCADE;
 
--- Create authors table
-CREATE TABLE authors (
-  id SERIAL PRIMARY KEY,
-  name TEXT NOT NULL,
-  country TEXT
+-- Initialize your schema
+create schema FMS;
+
+-- Create Bus table
+create table FMS.Bus (
+    bus_id serial primary key,
+    bus_number varchar(10) unique not null,
+    capacity int not null,
+    model varchar(50) not null,
+    manufacturer varchar(50) not null,
+    year_of_make int not null,
+    status varchar(20) not null,
+    last_service date not null
 );
 
--- Create books table
-CREATE TABLE books (
-  id SERIAL PRIMARY KEY,
-  title TEXT NOT NULL,
-  author_id INT REFERENCES authors(id),
-  price NUMERIC(8,2),
-  in_stock BOOLEAN DEFAULT true
+-- Create Route table
+create table FMS.Route (
+    route_id serial primary key,
+    route_number varchar(10) unique not null,
+    origin varchar(100) not null,
+    destination varchar(100) not null,
+    distance_km float not null,
+    estimated_time interval not null
 );
 
--- Create customers table
-CREATE TABLE customers (
-  id SERIAL PRIMARY KEY,
-  full_name TEXT NOT NULL,
-  email TEXT UNIQUE NOT NULL
+-- Create Schedule table
+create table FMS.Schedule (
+    schedule_id serial primary key,
+    bus_id int not null references FMS.Bus(bus_id),
+    route_id int not null references FMS.Route(route_id),
+    departure_time timestamp not null,
+    arrival_time timestamp not null
 );
 
--- Create orders table
-CREATE TABLE orders (
-  id SERIAL PRIMARY KEY,
-  customer_id INT REFERENCES customers(id),
-  book_id INT REFERENCES books(id),
-  order_date TIMESTAMP DEFAULT now()
+-- Create Passenger table
+create table FMS.Passenger (
+    passenger_id serial primary key,
+    first_name varchar(50) not null,
+    last_name varchar(50) not null,
+    email varchar(100) unique not null,
+    phone_number varchar(15) unique not null
 );
 
--- Insert sample authors (5 rows)
-INSERT INTO authors (name, country) VALUES
-  ('Chinua Achebe', 'Nigeria'),
-  ('Ngũgĩ wa Thiong\'o', 'Kenya'),
-  ('Wole Soyinka', 'Nigeria'),
-  ('Nadine Gordimer', 'South Africa'),
-  ('Binyavanga Wainaina', 'Kenya');
+-- Create Ticket table
+create table FMS.Ticket (
+    ticket_id serial primary key,
+    passenger_id int not null references FMS.Passenger(passenger_id),
+    schedule_id int not null references FMS.Schedule(schedule_id),
+    seat_number varchar(10) not null,
+    booking_time timestamp not null,
+    price float not null
+);
 
--- Insert sample books (5 rows)
-INSERT INTO books (title, author_id, price, in_stock) VALUES
-  ('Things Fall Apart', 1, 1200.00, true),
-  ('Petals of Blood', 2, 1500.00, true),
-  ('Death and the King\'s Horseman', 3, 1800.00, true),
-  ('July\'s People', 4, 1300.00, false),
-  ('One Day I Will Write About This Place', 5, 1600.00, true);
 
--- Insert sample customers (5 rows)
-INSERT INTO customers (full_name, email) VALUES
-  ('Joy Phoebe', 'joy@example.com'),
-  ('Brian Otieno', 'brian@example.com'),
-  ('Aisha Ali', 'aisha@example.com'),
-  ('Peter Mwangi', 'peter@example.com'),
-  ('Grace Wanjiku', 'grace@example.com');
+-- Sample data for FMS.Bus
+insert into FMS.Bus (bus_number, capacity, model, manufacturer, year_of_make, status, last_service) values
+('KDA 123A', 45, 'Coaster', 'Toyota', 2018, 'Active', '2025-07-01'),
+('KCB 456B', 33, 'Rosa', 'Mitsubishi', 2017, 'Active', '2025-06-15'),
+('KCE 789C', 51, 'Isuzu NQR', 'Isuzu', 2019, 'Maintenance', '2025-05-20'),
+('KDH 321D', 60, 'Marcopolo', 'Scania', 2020, 'Active', '2025-07-10'),
+('KCF 654E', 40, 'Optare', 'Ashok Leyland', 2016, 'Inactive', '2025-04-30');
 
--- Insert sample orders (5 rows)
-INSERT INTO orders (customer_id, book_id) VALUES
-  (1, 1),
-  (1, 2),
-  (2, 3),
-  (3, 4),
-  (4, 5);
+-- Sample data for FMS.Route
+insert into FMS.Route (route_number, origin, destination, distance_km, estimated_time) values
+('R001', 'Nairobi', 'Mombasa', 485.0, '08:00:00'),
+('R002', 'Kisumu', 'Nairobi', 350.0, '06:00:00'),
+('R003', 'Nakuru', 'Eldoret', 160.0, '03:00:00'),
+('R004', 'Nairobi', 'Thika', 45.0, '01:00:00'),
+('R005', 'Mombasa', 'Malindi', 120.0, '02:30:00');
+
+-- Sample data for FMS.Schedule
+insert into FMS.Schedule (bus_id, route_id, departure_time, arrival_time) values
+(1, 1, '2025-10-14 07:00:00', '2025-10-14 15:00:00'),
+(2, 2, '2025-10-14 08:00:00', '2025-10-14 14:00:00'),
+(3, 3, '2025-10-14 09:00:00', '2025-10-14 12:00:00'),
+(4, 4, '2025-10-14 06:30:00', '2025-10-14 07:30:00'),
+(5, 5, '2025-10-14 10:00:00', '2025-10-14 12:30:00');
+
+-- Sample data for FMS.Passenger
+insert into FMS.Passenger (first_name, last_name, email, phone_number) values
+('Wanjiku', 'Mwangi', 'wanjiku.mwangi@example.com', '0712345678'),
+('Otieno', 'Omondi', 'otieno.omondi@example.com', '0723456789'),
+('Amina', 'Abdalla', 'amina.abdalla@example.com', '0734567890'),
+('Mutiso', 'Muli', 'mutiso.muli@example.com', '0745678901'),
+('Chebet', 'Kiptoo', 'chebet.kiptoo@example.com', '0756789012');
+
+-- Sample data for FMS.Ticket
+insert into FMS.Ticket (passenger_id, schedule_id, seat_number, booking_time, price) values
+(1, 1, '12A', '2025-10-10 09:00:00', 1500.00),
+(2, 2, '5B', '2025-10-11 10:30:00', 1200.00),
+(3, 3, '20C', '2025-10-12 14:15:00', 800.00),
+(4, 4, '1D', '2025-10-13 08:45:00', 300.00),
+(5, 5, '15E', '2025-10-13 16:00:00', 700.00);
 ```
 
 - The Tables should look like this in Supabase:
