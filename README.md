@@ -248,7 +248,7 @@ erDiagram
 - **Passenger to Ticket:** One-to-Many (A passenger can book many tickets)
 
   
-- To test the table, I used two queries: 
+To test the table, I used two queries: 
 
 ```sql
 select * from FMS.route 
